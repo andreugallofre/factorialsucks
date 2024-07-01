@@ -55,6 +55,7 @@ type shift struct {
 	Id        int64  `json:"id"`
 	Period_id int64  `json:"period_id"`
 	Day       int    `json:"day"`
+	Date      string `json:"date"`
 	Clock_in  string `json:"clock_in"`
 	Clock_out string `json:"clock_out"`
 	Minutes   int64  `json:"minutes"`
@@ -131,6 +132,7 @@ func (c *factorialClient) ClockIn(dry_run bool) {
 			if !dry_run {
 				ok = false
 				shift.Day = d.Day
+				shift.Date = fmt.Sprintf("%d-%d-%d", c.year, c.month, d.Day)
 				body, _ = json.Marshal(shift)
 				resp, _ = c.Post(BASE_URL+"/attendance/shifts", "application/json;charset=UTF-8", bytes.NewBuffer(body))
 				if resp.StatusCode == 201 {
